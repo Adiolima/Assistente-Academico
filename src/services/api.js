@@ -6,7 +6,7 @@ import axios from "axios";
 
 // ⚠️ Configure o IP do seu computador aqui (onde o backend está rodando)
 // Exemplo: "http://192.168.1.100:8000"
-const API_BASE_URL = "https://unrifled-hyped-fredrick.ngrok-free.dev"; 
+const API_BASE_URL = "https://nome-assistente-academico-backend-visibilidade-p-production.up.railway.app"; 
 
 // Instância do axios com configuração base
 const api = axios.create({
