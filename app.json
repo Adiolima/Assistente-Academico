@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Assistente Acadêmico",
+    "slug": "assistente-academico",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#075E54",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.assacad.app"
+    },
+    "android": {
+      "package": "com.assacad.app"
+    }
+  }
+}
