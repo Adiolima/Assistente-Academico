@@ -6,10 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "backgroundColor": "#075E54",
-      "resizeMode": "contain"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,6 +15,9 @@
     },
     "android": {
       "package": "com.assacad.app"
-    }
+    },
+    "plugins": [
+      "expo-status-bar"
+    ]
   }
 }
