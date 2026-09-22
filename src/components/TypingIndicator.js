@@ -3,8 +3,7 @@
  * Simula o comportamento do WhatsApp: pontos saltam em sequência contínua.
  */
 import React, { useEffect, useRef } from "react";
-import { View, Animated, StyleSheet } from "react-native";
-
+import { View, Text, Animated, StyleSheet } from "react-native";
 export default function TypingIndicator() {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
@@ -38,7 +37,7 @@ export default function TypingIndicator() {
     <View style={styles.container}>
       <View style={styles.avatarSlot}>
         <View style={styles.avatar}>
-          <View style={styles.avatarText}>CE</View>
+          <Text style={styles.avatarText}>CE</Text>
         </View>
       </View>
       <View style={styles.bubble}>

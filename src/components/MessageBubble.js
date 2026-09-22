@@ -1,56 +1,50 @@
-/**
- * MessageBubble - Bolha de mensagem estilo WhatsApp.
- * - Enviadas: verde à direita com ponta + ticks de entrega/leitura.
- * - Recebidas: brancas à esquerda com avatar do bot.
- * - Agrupa mensagens consecutivas e suporta anexos (documento/PDF).
- */
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 import { COLORS, FONTS } from "../utils/theme";
 import { TickIcon } from "./Icons";
 import DocumentCard from "./DocumentCard";
 
-/**
- * Converte texto com formatação Markdown simples em elementos Text.
- * Suporta: **negrito**, *itálico*, • bullets, \n quebras de linha.
- */
-function FormattedText({ children: text, style }) {
+function FormattedText({ text, style }) {
   if (!text) return null;
 
-  const lines = text.split("\n");
+  const lines = String(text).split("\n");
 
   return (
     <Text style={style}>
-      {lines.map((line, lineIdx) => (
-        <Text key={lineIdx}>
-          {lineIdx > 0 ? "\n" : ""}
-          {formatLine(line)}
-        </Text>
-      ))}
+      {lines.map((line, lineIndex) => {
+        const parts = line.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+
+        return (
+          <Text key={lineIndex}>
+            {lineIndex > 0 ? "\n" : ""}
+            {parts.map((part, index) => {
+              if (part.startsWith("**") && part.endsWith("**")) {
+                return (
+                  <Text key={index} style={styles.bold}>
+                    {part.slice(2, -2)}
+                  </Text>
+                );
+              }
+
+              if (
+                part.startsWith("*") &&
+                part.endsWith("*") &&
+                part.length > 2
+              ) {
+                return (
+                  <Text key={index} style={styles.italic}>
+                    {part.slice(1, -1)}
+                  </Text>
+                );
+              }
+
+              return <Text key={index}>{part}</Text>;
+            })}
+          </Text>
+        );
+      })}
     </Text>
   );
-}
-
-function formatLine(line) {
-  // Divide por **negrito** ou *itálico*
-  const parts = line.split(/(\*\*.*?\*\*|\*.*?\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <Text key={i} style={{ fontWeight: FONTS.bold }}>
-          {part.slice(2, -2)}
-        </Text>
-      );
-    }
-    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
-      return (
-        <Text key={i} style={{ fontStyle: "italic" }}>
-          {part.slice(1, -1)}
-        </Text>
-      );
-    }
-    return <Text key={i}>{part}</Text>;
-  });
 }
 
 export default function MessageBubble({
@@ -60,47 +54,51 @@ export default function MessageBubble({
   status = "read",
 }) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(isUser ? 30 : -30)).current;
+  const translateAnim = useRef(
+    new Animated.Value(isUser ? 16 : -16)
+  ).current;
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 220,
+        duration: 180,
         useNativeDriver: true,
       }),
-      Animated.timing(slideAnim, {
+      Animated.timing(translateAnim, {
         toValue: 0,
-        duration: 240,
+        duration: 180,
         useNativeDriver: true,
       }),
     ]).start();
   }, []);
 
-  const formatTime = (ts) => {
-    if (!ts) return "";
-    const d = new Date(ts);
-    return `${String(d.getHours()).padStart(2, "0")}:${String(
-      d.getMinutes()
+  const formatTime = (timestamp) => {
+    if (!timestamp) return "";
+
+    const date = new Date(timestamp);
+
+    return `${String(date.getHours()).padStart(2, "0")}:${String(
+      date.getMinutes()
     ).padStart(2, "0")}`;
   };
 
-  const hasAttachment = !!message.attachment;
-  const tickColor = status === "read" ? COLORS.tickRead : COLORS.tickDelivered;
-  const tickDouble = status !== "sent";
+  const hasAttachment = Boolean(message?.attachment);
 
   return (
     <Animated.View
       style={[
         styles.row,
-        isUser ? styles.rowUser : styles.rowBot,
-        grouped ? styles.rowGrouped : styles.rowSpaced,
-        { opacity: fadeAnim, transform: [{ translateX: slideAnim }] },
+        isUser ? styles.rowUser : styles.rowAssistant,
+        grouped ? styles.rowGrouped : styles.rowSeparated,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateX: translateAnim }],
+        },
       ]}
     >
-      {/* Avatar do bot (oculto em mensagens agrupadas) */}
       {!isUser && (
-        <View style={styles.avatarSlot}>
+        <View style={styles.avatarColumn}>
           {!grouped && (
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>CE</Text>
@@ -109,32 +107,56 @@ export default function MessageBubble({
         </View>
       )}
 
-      <View style={isUser ? styles.userWrapper : styles.botWrapper}>
+      <View
+        style={[
+          styles.messageContainer,
+          isUser
+            ? styles.messageContainerUser
+            : styles.messageContainerAssistant,
+        ]}
+      >
         <View
           style={[
             styles.bubble,
-            isUser ? styles.userBubble : styles.botBubble,
+            isUser ? styles.userBubble : styles.assistantBubble,
+            grouped &&
+              (isUser
+                ? styles.userBubbleGrouped
+                : styles.assistantBubbleGrouped),
           ]}
         >
-          {hasAttachment && <DocumentCard attachment={message.attachment} />}
-          <FormattedText
-            style={[
-              styles.messageText,
-              isUser ? styles.userText : styles.botText,
-            ]}
-          >
-            {message.content}
-          </FormattedText>
+          {hasAttachment && (
+            <DocumentCard attachment={message.attachment} />
+          )}
 
-          <View style={styles.footer}>
-            <Text style={styles.timestamp}>
-              {formatTime(message.timestamp)}
-            </Text>
-            {isUser && (
-              <View style={styles.ticks}>
-                <TickIcon color={tickColor} double={tickDouble} size={15} />
-              </View>
-            )}
+          <View style={styles.contentRow}>
+            <FormattedText
+              text={message.content}
+              style={[
+                styles.messageText,
+                isUser ? styles.userText : styles.assistantText,
+              ]}
+            />
+
+            <View style={styles.footer}>
+              <Text style={styles.time}>
+                {formatTime(message.timestamp)}
+              </Text>
+
+              {isUser && (
+                <View style={styles.ticks}>
+                  <TickIcon
+                    color={
+                      status === "read"
+                        ? COLORS.tickRead
+                        : COLORS.tickDelivered
+                    }
+                    double={status !== "sent"}
+                    size={14}
+                  />
+                </View>
+              )}
+            </View>
           </View>
         </View>
       </View>
@@ -144,30 +166,35 @@ export default function MessageBubble({
 
 const styles = StyleSheet.create({
   row: {
+    width: "100%",
     flexDirection: "row",
     paddingHorizontal: 8,
     alignItems: "flex-end",
   },
+
   rowUser: {
     justifyContent: "flex-end",
   },
-  rowBot: {
+
+  rowAssistant: {
     justifyContent: "flex-start",
   },
-  rowSpaced: {
-    marginTop: 8,
-  },
-  rowGrouped: {
-    marginTop: 2,
+
+  rowSeparated: {
+    marginTop: 3,
   },
 
-  // Avatar (recebidas)
-  avatarSlot: {
-    width: 28,
-    marginRight: 6,
-    alignSelf: "flex-end",
+  rowGrouped: {
+    marginTop: 1,
+  },
+
+  avatarColumn: {
+    width: 30,
+    marginRight: 5,
+    alignItems: "center",
     justifyContent: "flex-end",
   },
+
   avatar: {
     width: 28,
     height: 28,
@@ -176,69 +203,93 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   avatarText: {
     color: COLORS.white,
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: FONTS.bold,
   },
 
-  // Wrappers
-  userWrapper: {
-    maxWidth: "80%",
+  messageContainer: {
+    maxWidth: "82%",
+  },
+
+  messageContainerUser: {
     alignItems: "flex-end",
   },
-  botWrapper: {
-    maxWidth: "80%",
+
+  messageContainerAssistant: {
     alignItems: "flex-start",
   },
 
-  // Bolha
   bubble: {
     borderRadius: 8,
-    paddingHorizontal: 9,
+    paddingHorizontal: 8,
     paddingTop: 6,
-    paddingBottom: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 1,
-    elevation: 1,
+    paddingBottom: 5,
+    minWidth: 70,
   },
+
   userBubble: {
-    backgroundColor: COLORS.userBubble,
+    backgroundColor: "#D9FDD3",
     borderTopRightRadius: 2,
   },
-  botBubble: {
-    backgroundColor: COLORS.botBubble,
-    borderTopLeftRadius: 2,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: COLORS.botBubbleBorder,
-  },
-  messageText: {
-    fontSize: FONTS.messageText,
-    lineHeight: 22,
-    color: COLORS.textPrimary,
-  },
-  userText: {},
-  botText: {},
 
-  // Rodapé (hora + ticks) encaixado no canto inferior direito
-  footer: {
+  assistantBubble: {
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 2,
+  },
+
+  userBubbleGrouped: {
+    borderTopRightRadius: 8,
+  },
+
+  assistantBubbleGrouped: {
+    borderTopLeftRadius: 8,
+  },
+
+  contentRow: {
     flexDirection: "row",
     alignItems: "flex-end",
-    alignSelf: "flex-end",
-    marginTop: 2,
-    marginBottom: -3,
-    marginRight: -3,
+  },
+
+  messageText: {
+    fontSize: 15.5,
+    lineHeight: 21,
+    flexShrink: 1,
+  },
+
+  userText: {
+    color: "#111B21",
+  },
+
+  assistantText: {
+    color: "#111B21",
+  },
+
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginLeft: 8,
+    marginTop: 3,
+    alignSelf: "flex-end",
   },
-  timestamp: {
-    fontSize: FONTS.timestamp,
-    color: COLORS.textSecondary,
-    lineHeight: 13,
+
+  time: {
+    fontSize: 10,
+    color: "#667781",
   },
+
   ticks: {
     marginLeft: 3,
     marginBottom: 1,
+  },
+
+  bold: {
+    fontWeight: "700",
+  },
+
+  italic: {
+    fontStyle: "italic",
   },
 });

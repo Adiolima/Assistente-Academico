@@ -1,12 +1,19 @@
-/**
- * ChatHeader - Barra superior estilo WhatsApp.
- * Voltar · Avatar · Nome/status · Vídeo · Telefone · Menu ⋮.
- * Preserva as props de status/menu já usadas pelo ChatScreen.
- */
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
-import { COLORS, FONTS, SHADOWS } from "../utils/theme";
-import { BackIcon, PhoneIcon, VideoIcon, MenuIcon } from "./Icons";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
+
+import { COLORS, FONTS } from "../utils/theme";
+import {
+  BackIcon,
+  PhoneIcon,
+  VideoIcon,
+  MenuIcon,
+} from "./Icons";
 
 export default function ChatHeader({
   isTyping = false,
@@ -18,65 +25,54 @@ export default function ChatHeader({
 }) {
   return (
     <View style={styles.header}>
-      {/* Voltar */}
       <TouchableOpacity
-        style={styles.iconButton}
+        style={styles.backButton}
         onPress={onBackPress}
-        activeOpacity={0.5}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        activeOpacity={0.6}
       >
-        <BackIcon color={COLORS.headerText} size={26} />
+        <BackIcon color="#FFFFFF" size={24} />
       </TouchableOpacity>
 
-      {/* Avatar */}
       <View style={styles.avatarContainer}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>CE</Text>
         </View>
+
         {isOnline && <View style={styles.onlineDot} />}
       </View>
 
-      {/* Nome + status */}
-      <View style={styles.textContainer}>
-        <Text style={styles.title} numberOfLines={1}>
+      <View style={styles.identity}>
+        <Text style={styles.name} numberOfLines={1}>
           Colégio Estrela do Saber
         </Text>
-        <Text
-          style={[styles.subtitle, isTyping && styles.subtitleTyping]}
-          numberOfLines={1}
-        >
-          {isTyping ? "a escrever..." : isOnline ? "Online" : "Offline"}
+
+        <Text style={styles.status} numberOfLines={1}>
+          {isTyping ? "a escrever..." : "online"}
         </Text>
       </View>
 
-      {/* Vídeo */}
       <TouchableOpacity
-        style={styles.iconButton}
+        style={styles.actionButton}
         onPress={onVideoPress}
-        activeOpacity={0.5}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        activeOpacity={0.6}
       >
-        <VideoIcon color={COLORS.headerText} size={23} />
+        <VideoIcon color="#FFFFFF" size={22} />
       </TouchableOpacity>
 
-      {/* Telefone */}
       <TouchableOpacity
-        style={styles.iconButton}
+        style={styles.actionButton}
         onPress={onCallPress}
-        activeOpacity={0.5}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        activeOpacity={0.6}
       >
-        <PhoneIcon color={COLORS.headerText} size={21} />
+        <PhoneIcon color="#FFFFFF" size={20} />
       </TouchableOpacity>
 
-      {/* Menu ⋮ */}
       <TouchableOpacity
-        style={styles.iconButton}
+        style={styles.menuButton}
         onPress={onMenuPress}
-        activeOpacity={0.5}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        activeOpacity={0.6}
       >
-        <MenuIcon color={COLORS.headerText} size={24} />
+        <MenuIcon color="#FFFFFF" size={23} />
       </TouchableOpacity>
     </View>
   );
@@ -84,66 +80,84 @@ export default function ChatHeader({
 
 const styles = StyleSheet.create({
   header: {
+    height: Platform.OS === "ios" ? 58 : 56,
+    backgroundColor: "#075E54",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: COLORS.headerBg,
-    paddingHorizontal: 4,
-    paddingVertical: Platform.OS === "ios" ? 7 : 8,
-    ...SHADOWS.large,
+    paddingHorizontal: 2,
   },
-  iconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+
+  backButton: {
+    width: 38,
+    height: 48,
     alignItems: "center",
     justifyContent: "center",
   },
+
   avatarContainer: {
+    width: 40,
+    height: 40,
+    marginLeft: 1,
+    marginRight: 9,
     position: "relative",
-    marginRight: 10,
-    marginLeft: 2,
   },
+
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: COLORS.white,
-    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
+    justifyContent: "center",
   },
+
   avatarText: {
-    fontSize: 15,
-    fontWeight: FONTS.bold,
-    color: COLORS.headerBg,
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#075E54",
   },
+
   onlineDot: {
     position: "absolute",
-    bottom: 1,
-    right: 1,
-    width: 12,
-    height: 12,
+    right: -1,
+    bottom: 0,
+    width: 11,
+    height: 11,
     borderRadius: 6,
-    backgroundColor: COLORS.online,
+    backgroundColor: "#25D366",
     borderWidth: 2,
-    borderColor: COLORS.headerBg,
+    borderColor: "#075E54",
   },
-  textContainer: {
+
+  identity: {
     flex: 1,
     justifyContent: "center",
-    marginRight: 4,
   },
-  title: {
-    fontSize: FONTS.headerTitle,
-    fontWeight: FONTS.semibold,
-    color: COLORS.headerText,
+
+  name: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600",
+    maxWidth: "100%",
   },
-  subtitle: {
-    fontSize: FONTS.subtitle,
-    color: COLORS.headerStatus,
+
+  status: {
+    color: "#D7F2ED",
+    fontSize: 12,
     marginTop: 1,
   },
-  subtitleTyping: {
-    color: COLORS.headerStatus,
-    fontStyle: "italic",
+
+  actionButton: {
+    width: 42,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  menuButton: {
+    width: 36,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

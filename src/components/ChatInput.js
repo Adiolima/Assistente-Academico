@@ -1,9 +1,4 @@
-/**
- * ChatInput - Barra de composição estilo WhatsApp.
- * [ + ] [ 😊  campo de texto  📷 ] [ 🎙 / enviar ]
- * Preserva as props onSend/disabled e a lógica de envio existente.
- */
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   TextInput,
@@ -13,89 +8,120 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { COLORS, RADIUS, SHADOWS } from "../utils/theme";
-import { PlusIcon, SmileIcon, CameraIcon, MicIcon } from "./Icons";
 
-export default function ChatInput({ onSend, disabled = false }) {
+import { COLORS } from "../utils/theme";
+import {
+  PlusIcon,
+  SmileIcon,
+  CameraIcon,
+  MicIcon,
+} from "./Icons";
+
+export default function ChatInput({
+  onSend,
+  disabled = false,
+}) {
   const [text, setText] = useState("");
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const scale = useRef(new Animated.Value(1)).current;
 
-  const isSendable = text.trim().length > 0 && !disabled;
+  const sendable = text.trim().length > 0 && !disabled;
 
-  const handleSend = () => {
-    if (!isSendable) return;
+  const send = () => {
+    if (!sendable) return;
 
-    // Animação de pulso no botão
     Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 0.85,
-        duration: 80,
+      Animated.timing(scale, {
+        toValue: 0.88,
+        duration: 70,
         useNativeDriver: true,
       }),
-      Animated.timing(scaleAnim, {
+      Animated.timing(scale, {
         toValue: 1,
-        duration: 120,
+        duration: 100,
         useNativeDriver: true,
       }),
     ]).start();
 
-    onSend(text.trim());
+    const message = text.trim();
+
+    onSend(message);
     setText("");
     Keyboard.dismiss();
   };
 
-  const sendColor = isSendable ? COLORS.sendActive : COLORS.sendInactive;
-
   return (
-    <View style={styles.container}>
-      {/* Botão "+" */}
+    <View style={styles.bar}>
       <TouchableOpacity
         style={styles.plusButton}
-        activeOpacity={0.4}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        activeOpacity={0.6}
       >
-        <PlusIcon color={COLORS.inputIcon} size={27} />
+        <PlusIcon
+          color="#54656F"
+          size={27}
+        />
       </TouchableOpacity>
 
-      {/* Campo arredondado com emoji e câmara dentro */}
-      <View style={styles.inputWrapper}>
-        <TouchableOpacity style={styles.emojiInside} activeOpacity={0.4}>
-          <SmileIcon color={COLORS.inputIcon} size={24} />
+      <View style={styles.composer}>
+        <TouchableOpacity
+          style={styles.composerIcon}
+          activeOpacity={0.6}
+        >
+          <SmileIcon
+            color="#54656F"
+            size={23}
+          />
         </TouchableOpacity>
 
         <TextInput
           style={styles.input}
-          placeholder="Mensagem"
-          placeholderTextColor={COLORS.textLight}
           value={text}
           onChangeText={setText}
+          placeholder="Mensagem"
+          placeholderTextColor="#667781"
           multiline
           maxLength={2000}
           editable={!disabled}
           returnKeyType="send"
-          blurOnSubmit={true}
-          onSubmitEditing={handleSend}
+          blurOnSubmit
+          onSubmitEditing={send}
         />
 
-        <TouchableOpacity style={styles.cameraInside} activeOpacity={0.4}>
-          <CameraIcon color={COLORS.inputIcon} size={22} />
+        <TouchableOpacity
+          style={styles.composerIcon}
+          activeOpacity={0.6}
+        >
+          <CameraIcon
+            color="#54656F"
+            size={21}
+          />
         </TouchableOpacity>
       </View>
 
-      {/* Microfone (vazio) ou Enviar (com texto) */}
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-        {isSendable ? (
+      <Animated.View
+        style={{
+          transform: [{ scale }],
+        }}
+      >
+        {sendable ? (
           <TouchableOpacity
-            style={[styles.sendButton, { backgroundColor: sendColor }]}
-            onPress={handleSend}
-            disabled={!isSendable}
-            activeOpacity={0.6}
+            style={styles.sendButton}
+            onPress={send}
+            activeOpacity={0.7}
           >
-            <SendIcon color={COLORS.white} />
+            <View style={styles.sendArrow}>
+              <View style={styles.sendStem} />
+              <View style={styles.sendHead} />
+            </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.micButton} activeOpacity={0.4}>
-            <MicIcon color={COLORS.inputIcon} size={24} />
+          <TouchableOpacity
+            style={styles.micButton}
+            activeOpacity={0.6}
+          >
+            <MicIcon
+              color="#54656F"
+              size={23}
+            />
           </TouchableOpacity>
         )}
       </Animated.View>
@@ -103,109 +129,98 @@ export default function ChatInput({ onSend, disabled = false }) {
   );
 }
 
-/**
- * Ícone de envio (seta para cima) construído com Views.
- */
-function SendIcon({ color }) {
-  return (
-    <View style={iconStyles.container}>
-      <View style={[iconStyles.arrow, { borderBottomColor: color }]} />
-      <View style={[iconStyles.stem, { backgroundColor: color }]} />
-    </View>
-  );
-}
-
-const iconStyles = StyleSheet.create({
-  container: {
-    width: 20,
-    height: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    transform: [{ rotate: "45deg" }],
-  },
-  arrow: {
-    width: 0,
-    height: 0,
-    borderLeftWidth: 8,
-    borderRightWidth: 8,
-    borderBottomWidth: 10,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    position: "absolute",
-    top: -2,
-  },
-  stem: {
-    width: 3,
-    height: 13,
-    borderRadius: 2,
-    position: "absolute",
-    bottom: 1,
-  },
-});
-
 const styles = StyleSheet.create({
-  container: {
+  bar: {
     flexDirection: "row",
     alignItems: "flex-end",
-    paddingHorizontal: 6,
-    paddingVertical: 7,
-    backgroundColor: COLORS.inputBar,
+    paddingHorizontal: 5,
+    paddingTop: 5,
+    paddingBottom: Platform.OS === "ios" ? 7 : 6,
+    backgroundColor: "#F0F2F5",
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: COLORS.inputBorder,
-    paddingBottom: Platform.OS === "ios" ? 8 : 7,
+    borderTopColor: "#D9DEE2",
   },
+
   plusButton: {
-    width: 40,
+    width: 42,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  composer: {
+    flex: 1,
+    minHeight: 42,
+    maxHeight: 118,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 21,
+    paddingLeft: 4,
+    paddingRight: 4,
+    marginRight: 4,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "#D9DEE2",
+  },
+
+  composerIcon: {
+    width: 36,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
   },
-  inputWrapper: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    backgroundColor: COLORS.inputBg,
-    borderRadius: RADIUS.xl,
-    paddingLeft: 6,
-    paddingRight: 6,
-    paddingVertical: 2,
-    marginHorizontal: 2,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: COLORS.inputBorder,
-  },
-  emojiInside: {
-    width: 34,
-    height: 38,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cameraInside: {
-    width: 34,
-    height: 38,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   input: {
     flex: 1,
-    fontSize: 15.5,
-    maxHeight: 120,
-    paddingVertical: 8,
-    color: COLORS.textPrimary,
-    paddingHorizontal: 4,
+    minHeight: 40,
+    maxHeight: 110,
+    paddingHorizontal: 3,
+    paddingVertical: Platform.OS === "ios" ? 9 : 8,
+    color: "#111B21",
+    fontSize: 16,
   },
+
   micButton: {
-    width: 44,
+    width: 42,
     height: 44,
-    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
   },
+
   sendButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: "center",
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: "#00A884",
     alignItems: "center",
-    ...SHADOWS.small,
+    justifyContent: "center",
+  },
+
+  sendArrow: {
+    width: 21,
+    height: 21,
+    transform: [{ rotate: "-45deg" }],
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  sendStem: {
+    width: 3,
+    height: 15,
+    borderRadius: 2,
+    backgroundColor: "#FFFFFF",
+    position: "absolute",
+    bottom: 1,
+  },
+
+  sendHead: {
+    width: 10,
+    height: 10,
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: "#FFFFFF",
+    position: "absolute",
+    top: 1,
+    right: 1,
   },
 });
