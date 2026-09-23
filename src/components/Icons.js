@@ -1,61 +1,10 @@
 /**
- * Icons - Ícones lineares reutilizáveis construídos com Views/texto.
- * Não depende de bibliotecas externas; mantém o visual limpo do WhatsApp.
+ * Ícones geométricos no estilo WhatsApp, sem bibliotecas extra.
  */
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-/* ------------------------------------------------------------------ */
-/* Glifos de texto (monocromáticos e nítidos)                          */
-/* ------------------------------------------------------------------ */
-
-function Glyph({ char, size = 24, color = "#54656F", weight = "600" }) {
-  return (
-    <Text
-      style={{
-        fontSize: size,
-        lineHeight: Math.round(size * 1.2),
-        color,
-        fontWeight: weight,
-        textAlign: "center",
-        includeFontPadding: false,
-      }}
-    >
-      {char}
-    </Text>
-  );
-}
-
-/** Seta/chevron de voltar. */
-export function BackIcon({ color = "#FFFFFF", size = 26 }) {
-  return <Glyph char="❮" size={size} color={color} weight="600" />;
-}
-
-/** Telefone (handset). */
-export function PhoneIcon({ color = "#FFFFFF", size = 21 }) {
-  return <Glyph char="☎" size={size} color={color} weight="600" />;
-}
-
-/** Menu de três pontos verticais. */
-export function MenuIcon({ color = "#FFFFFF", size = 24 }) {
-  return <Glyph char="⋮" size={size} color={color} weight="700" />;
-}
-
-/** Botão "+" de anexo. */
-export function PlusIcon({ color = "#54656F", size = 26 }) {
-  return <Glyph char="+" size={size} color={color} weight="400" />;
-}
-
-/** Ícone de emoji (rosto sorridente). */
-export function SmileIcon({ color = "#54656F", size = 24 }) {
-  return <Glyph char="☺" size={size} color={color} weight="600" />;
-}
-
-/* ------------------------------------------------------------------ */
-/* Ícones em Views (vídeo, câmara, microfone, cadeado, PDF, ticks)      */
-/* ------------------------------------------------------------------ */
-
-function IconWrap({ size = 24, children }) {
+function Wrap({ size = 24, children }) {
   return (
     <View
       style={{
@@ -70,96 +19,239 @@ function IconWrap({ size = 24, children }) {
   );
 }
 
-/** Chamada de vídeo: retângulo arredondado + lente triangular. */
-export function VideoIcon({ color = "#FFFFFF", size = 24 }) {
-  const t = 2;
+export function BackIcon({ color = "#FFFFFF", size = 22 }) {
   return (
-    <IconWrap size={size}>
+    <Wrap size={size}>
       <View
         style={{
-          width: size * 0.62,
-          height: size * 0.42,
-          borderRadius: 2,
-          borderWidth: t,
+          width: size * 0.46,
+          height: size * 0.46,
+          borderLeftWidth: 2.4,
+          borderBottomWidth: 2.4,
           borderColor: color,
+          transform: [{ rotate: "45deg" }],
+          marginLeft: size * 0.16,
         }}
-      >
+      />
+    </Wrap>
+  );
+}
+
+export function MenuIcon({ color = "#FFFFFF", size = 22 }) {
+  return (
+    <Wrap size={size}>
+      <View style={{ alignItems: "center", justifyContent: "space-between", height: size * 0.55 }}>
+        <View style={[dot(color, size)]} />
+        <View style={[dot(color, size)]} />
+        <View style={[dot(color, size)]} />
+      </View>
+    </Wrap>
+  );
+}
+
+function dot(color, size) {
+  const d = Math.max(3.2, size * 0.16);
+  return {
+    width: d,
+    height: d,
+    borderRadius: d / 2,
+    backgroundColor: color,
+  };
+}
+
+export function SearchIcon({ color = "#FFFFFF", size = 22 }) {
+  const r = size * 0.42;
+  return (
+    <Wrap size={size}>
+      <View style={{ width: size, height: size }}>
         <View
           style={{
             position: "absolute",
-            right: -size * 0.16,
-            top: size * 0.08,
-            width: 0,
-            height: 0,
-            borderTopWidth: size * 0.11,
-            borderBottomWidth: size * 0.11,
-            borderRightWidth: size * 0.16,
-            borderTopColor: "transparent",
-            borderBottomColor: "transparent",
-            borderRightColor: color,
+            left: size * 0.12,
+            top: size * 0.1,
+            width: r,
+            height: r,
+            borderRadius: r / 2,
+            borderWidth: 2,
+            borderColor: color,
+          }}
+        />
+        <View
+          style={{
+            position: "absolute",
+            right: size * 0.12,
+            bottom: size * 0.14,
+            width: size * 0.34,
+            height: 2,
+            backgroundColor: color,
+            borderRadius: 1,
+            transform: [{ rotate: "45deg" }],
           }}
         />
       </View>
-    </IconWrap>
+    </Wrap>
   );
 }
 
-/** Câmara fotográfica. */
-export function CameraIcon({ color = "#54656F", size = 24 }) {
+export function CameraIcon({ color = "#FFFFFF", size = 22 }) {
   const t = 2;
   return (
-    <IconWrap size={size}>
+    <Wrap size={size}>
+      <View style={{ alignItems: "center" }}>
+        <View
+          style={{
+            width: size * 0.22,
+            height: size * 0.14,
+            borderTopWidth: t,
+            borderLeftWidth: t,
+            borderRightWidth: t,
+            borderColor: color,
+            borderTopLeftRadius: 2,
+            borderTopRightRadius: 2,
+          }}
+        />
+        <View
+          style={{
+            width: size * 0.78,
+            height: size * 0.52,
+            borderRadius: 3,
+            borderWidth: t,
+            borderColor: color,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              width: size * 0.22,
+              height: size * 0.22,
+              borderRadius: size * 0.11,
+              borderWidth: t,
+              borderColor: color,
+            }}
+          />
+        </View>
+      </View>
+    </Wrap>
+  );
+}
+
+export function PhoneIcon({ color = "#FFFFFF", size = 20 }) {
+  return (
+    <Wrap size={size}>
       <View
         style={{
-          position: "absolute",
-          top: size * 0.04,
-          left: size * 0.2,
-          width: size * 0.2,
-          height: size * 0.2,
-          borderTopWidth: t,
-          borderLeftWidth: t,
-          borderRightWidth: t,
+          width: size * 0.42,
+          height: size * 0.72,
+          borderRadius: size * 0.12,
+          borderWidth: 2,
           borderColor: color,
-          borderTopLeftRadius: 2,
-          borderTopRightRadius: 2,
+          transform: [{ rotate: "-35deg" }],
         }}
       />
+    </Wrap>
+  );
+}
+
+export function VideoIcon({ color = "#FFFFFF", size = 22 }) {
+  return (
+    <Wrap size={size}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{
+            width: size * 0.52,
+            height: size * 0.4,
+            borderRadius: 3,
+            borderWidth: 2,
+            borderColor: color,
+          }}
+        />
+        <View
+          style={{
+            width: 0,
+            height: 0,
+            marginLeft: 1,
+            borderTopWidth: size * 0.12,
+            borderBottomWidth: size * 0.12,
+            borderLeftWidth: size * 0.18,
+            borderTopColor: "transparent",
+            borderBottomColor: "transparent",
+            borderLeftColor: color,
+          }}
+        />
+      </View>
+    </Wrap>
+  );
+}
+
+export function PlusIcon({ color = "#54656F", size = 26 }) {
+  return (
+    <Wrap size={size}>
+      <View style={{ width: size * 0.7, height: size * 0.7, alignItems: "center", justifyContent: "center" }}>
+        <View
+          style={{
+            position: "absolute",
+            width: size * 0.62,
+            height: 2.2,
+            backgroundColor: color,
+            borderRadius: 1,
+          }}
+        />
+        <View
+          style={{
+            position: "absolute",
+            width: 2.2,
+            height: size * 0.62,
+            backgroundColor: color,
+            borderRadius: 1,
+          }}
+        />
+      </View>
+    </Wrap>
+  );
+}
+
+export function SmileIcon({ color = "#54656F", size = 22 }) {
+  return (
+    <Wrap size={size}>
       <View
         style={{
-          width: size * 0.8,
-          height: size * 0.54,
-          borderRadius: 3,
-          borderWidth: t,
+          width: size * 0.86,
+          height: size * 0.86,
+          borderRadius: size * 0.43,
+          borderWidth: 2,
           borderColor: color,
-          marginTop: size * 0.2,
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-end",
+          paddingBottom: size * 0.16,
         }}
       >
         <View
           style={{
-            width: size * 0.18,
+            width: size * 0.38,
             height: size * 0.18,
-            borderRadius: size * 0.09,
-            borderWidth: t,
+            borderBottomWidth: 2,
+            borderLeftWidth: 2,
+            borderRightWidth: 2,
             borderColor: color,
+            borderBottomLeftRadius: size * 0.2,
+            borderBottomRightRadius: size * 0.2,
           }}
         />
       </View>
-    </IconWrap>
+    </Wrap>
   );
 }
 
-/** Microfone. */
-export function MicIcon({ color = "#54656F", size = 24 }) {
+export function MicIcon({ color = "#54656F", size = 22 }) {
   const t = 2;
   return (
-    <IconWrap size={size}>
+    <Wrap size={size}>
       <View style={{ alignItems: "center" }}>
         <View
           style={{
             width: size * 0.28,
-            height: size * 0.46,
+            height: size * 0.42,
             borderRadius: size * 0.14,
             borderWidth: t,
             borderColor: color,
@@ -167,28 +259,47 @@ export function MicIcon({ color = "#54656F", size = 24 }) {
         />
         <View
           style={{
-            width: size * 0.4,
-            height: size * 0.26,
-            marginTop: 2,
+            width: size * 0.5,
+            height: size * 0.22,
+            marginTop: 1,
             borderLeftWidth: t,
             borderRightWidth: t,
             borderBottomWidth: t,
             borderColor: color,
-            borderBottomLeftRadius: size * 0.2,
-            borderBottomRightRadius: size * 0.2,
+            borderBottomLeftRadius: size * 0.22,
+            borderBottomRightRadius: size * 0.22,
           }}
         />
         <View style={{ width: t, height: size * 0.1, backgroundColor: color }} />
       </View>
-    </IconWrap>
+    </Wrap>
   );
 }
 
-/** Cadeado (aviso de criptografia). */
-export function LockIcon({ color = "#7A7A7A", size = 16 }) {
+export function SendIcon({ color = "#FFFFFF", size = 20 }) {
+  return (
+    <Wrap size={size}>
+      <View
+        style={{
+          width: 0,
+          height: 0,
+          borderTopWidth: size * 0.22,
+          borderBottomWidth: size * 0.22,
+          borderLeftWidth: size * 0.4,
+          borderTopColor: "transparent",
+          borderBottomColor: "transparent",
+          borderLeftColor: color,
+          transform: [{ rotate: "-15deg" }, { translateX: 1 }],
+        }}
+      />
+    </Wrap>
+  );
+}
+
+export function LockIcon({ color = "#7A7A7A", size = 14 }) {
   const t = 1.6;
   return (
-    <IconWrap size={size}>
+    <Wrap size={size}>
       <View style={{ alignItems: "center" }}>
         <View
           style={{
@@ -211,70 +322,157 @@ export function LockIcon({ color = "#7A7A7A", size = 16 }) {
           }}
         />
       </View>
-    </IconWrap>
+    </Wrap>
   );
 }
 
-/** Informação (i dentro de círculo) para avisos discretos. */
-export function InfoIcon({ color = "#667781", size = 16 }) {
-  return (
-    <IconWrap size={size}>
-      <View
-        style={{
-          width: size * 0.9,
-          height: size * 0.9,
-          borderRadius: size * 0.45,
-          borderWidth: 1.5,
-          borderColor: color,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text
-          style={{
-            color,
-            fontSize: size * 0.6,
-            fontWeight: "700",
-            lineHeight: size * 0.7,
-            includeFontPadding: false,
-          }}
-        >
-          i
-        </Text>
-      </View>
-    </IconWrap>
-  );
-}
-
-/** Ticks de entrega/leitura (✓ simples ou ✓✓). */
-export function TickIcon({ color = "#667781", double = true, size = 16 }) {
-  const check = (key, extraStyle) => (
+export function TickIcon({ color = "#667781", double = true, size = 14 }) {
+  const check = (key, extra) => (
     <View
       key={key}
       style={[
         {
-          width: size * 0.5,
-          height: size * 0.3,
-          borderRightWidth: 1.6,
-          borderBottomWidth: 1.6,
+          width: size * 0.42,
+          height: size * 0.24,
+          borderRightWidth: 1.7,
+          borderBottomWidth: 1.7,
           borderColor: color,
           transform: [{ rotate: "45deg" }],
-          marginTop: size * 0.16,
+          marginTop: size * 0.12,
         },
-        extraStyle,
+        extra,
       ]}
     />
   );
-
   return (
     <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
       {check("a")}
-      {double && check("b", { marginLeft: -size * 0.22 })}
+      {double ? check("b", { marginLeft: -size * 0.2 }) : null}
     </View>
   );
 }
 
-/** Ícone vermelho de PDF com rótulo "PDF". */
+export function ChatTabIcon({ color = "#54656F", size = 24 }) {
+  return (
+    <Wrap size={size}>
+      <View
+        style={{
+          width: size * 0.78,
+          height: size * 0.58,
+          borderRadius: size * 0.16,
+          borderWidth: 2,
+          borderColor: color,
+        }}
+      />
+    </Wrap>
+  );
+}
+
+export function StatusTabIcon({ color = "#54656F", size = 24 }) {
+  return (
+    <Wrap size={size}>
+      <View
+        style={{
+          width: size * 0.72,
+          height: size * 0.72,
+          borderRadius: size * 0.36,
+          borderWidth: 2.2,
+          borderColor: color,
+          borderStyle: "dashed",
+        }}
+      />
+    </Wrap>
+  );
+}
+
+export function CommunitiesTabIcon({ color = "#54656F", size = 24 }) {
+  const c = (left) => (
+    <View
+      key={left}
+      style={{
+        width: size * 0.34,
+        height: size * 0.34,
+        borderRadius: size * 0.17,
+        borderWidth: 2,
+        borderColor: color,
+        marginLeft: left ? -size * 0.1 : 0,
+      }}
+    />
+  );
+  return (
+    <Wrap size={size}>
+      <View style={{ flexDirection: "row" }}>{c(false)}{c(true)}</View>
+    </Wrap>
+  );
+}
+
+export function CallsTabIcon({ color = "#54656F", size = 24 }) {
+  return <PhoneIcon color={color} size={size * 0.9} />;
+}
+
+export function ArchiveIcon({ color = "#54656F", size = 22 }) {
+  return (
+    <Wrap size={size}>
+      <View style={{ alignItems: "center" }}>
+        <View
+          style={{
+            width: size * 0.78,
+            height: size * 0.22,
+            borderRadius: 2,
+            borderWidth: 2,
+            borderColor: color,
+          }}
+        />
+        <View
+          style={{
+            width: size * 0.64,
+            height: size * 0.4,
+            marginTop: 2,
+            borderWidth: 2,
+            borderTopWidth: 0,
+            borderColor: color,
+            borderBottomLeftRadius: 2,
+            borderBottomRightRadius: 2,
+          }}
+        />
+      </View>
+    </Wrap>
+  );
+}
+
+export function MessageFabIcon({ color = "#FFFFFF", size = 24 }) {
+  return (
+    <Wrap size={size}>
+      <View
+        style={{
+          width: size * 0.72,
+          height: size * 0.54,
+          borderRadius: 5,
+          backgroundColor: color,
+        }}
+      />
+    </Wrap>
+  );
+}
+
+export function CallArrowIcon({ incoming = true, missed = false, size = 14 }) {
+  const color = missed ? "#F15C6D" : "#00A884";
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <Text
+        style={{
+          color,
+          fontSize: size,
+          fontWeight: "700",
+          transform: [{ rotate: incoming ? "45deg" : "-135deg" }],
+        }}
+      >
+        ↙
+      </Text>
+    </View>
+  );
+}
+
 export function PdfIcon({ size = 36 }) {
   return (
     <View
@@ -285,32 +483,13 @@ export function PdfIcon({ size = 36 }) {
         backgroundColor: "#F44336",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
       }}
     >
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          width: 0,
-          height: 0,
-          borderTopWidth: 9,
-          borderLeftWidth: 9,
-          borderTopColor: "#B71C1C",
-          borderLeftColor: "transparent",
-        }}
-      />
-      <Text
-        style={{
-          color: "#FFFFFF",
-          fontSize: size * 0.28,
-          fontWeight: "700",
-          letterSpacing: 0.2,
-        }}
-      >
+      <Text style={{ color: "#FFFFFF", fontSize: size * 0.28, fontWeight: "700" }}>
         PDF
       </Text>
     </View>
   );
 }
+
+export const iconStyles = StyleSheet.create({});

@@ -1,91 +1,80 @@
 /**
- * Tema centralizado do Assistente Acadêmico.
- * Paleta fiel à linguagem visual do WhatsApp Mobile.
+ * Paleta e tokens visuais do WhatsApp (Android clássico).
  */
 export const COLORS = {
-  // Header (verde-escuro WhatsApp)
   headerBg: "#075E54",
   headerBgDark: "#054C44",
   headerText: "#FFFFFF",
-  headerBorder: "#0A6B5F",
-  headerStatus: "#80CBC4",
+  headerIcon: "#FFFFFF",
+  headerStatus: "#B2DFDB",
 
-  // Status
+  accent: "#00A884",
+  accentDark: "#008069",
   online: "#25D366",
-  offline: "#FF5252",
-  typing: "#A5D6A7",
+  unreadBadge: "#25D366",
+  fab: "#00A884",
 
-  // Chat (wallpaper bege)
-  chatBg: "#ECE5DD",
-  chatBgPattern: "#D6CBBE",
-  chatBgPatternSoft: "#DCD2C5",
+  tabBar: "#FFFFFF",
+  tabActive: "#00A884",
+  tabInactive: "#54656F",
 
-  // Bolhas
-  userBubble: "#D9FDD3",
-  userBubbleDark: "#C6EFB6",
+  screenBg: "#FFFFFF",
+  rowDivider: "#F0F2F5",
+  searchBg: "#F0F2F5",
+
+  chatBg: "#E5DDD5",
+  chatBgPattern: "#D3C6B8",
+
+  userBubble: "#DCF8C6",
   botBubble: "#FFFFFF",
-  botBubbleBorder: "#E8E8E8",
 
-  // Texto
   textPrimary: "#111B21",
   textSecondary: "#667781",
-  textLight: "#9AA7AD",
+  textLight: "#8696A0",
   textWhite: "#FFFFFF",
+  textMeta: "#667781",
 
-  // Ticks de entrega/leitura
   tickRead: "#53BDEB",
   tickDelivered: "#667781",
 
-  // Input
   inputBg: "#FFFFFF",
-  inputBorder: "#E0E0E0",
   inputBar: "#F0F2F5",
   sendActive: "#00A884",
-  sendInactive: "#90A4AE",
   inputIcon: "#54656F",
 
-  // Menu
   menuBg: "#FFFFFF",
-  menuItemHover: "#F5F5F5",
   menuBorder: "#EEEEEE",
-  overlay: "rgba(0,0,0,0.4)",
+  overlay: "rgba(0,0,0,0.35)",
 
-  // Quick replies
-  quickReplyBg: "#FFFFFF",
-  quickReplyBorder: "#E0E0E0",
-  quickReplyText: "#075E54",
-
-  // Separadores / avisos
-  dateSeparatorBg: "#FFFFFF",
+  dateSeparatorBg: "#E1F2FA",
   dateSeparatorText: "#54656F",
-  encryptionBg: "rgba(255, 255, 255, 0.92)",
-  encryptionText: "#667781",
-  encryptionBorder: "#E2E5E7",
+  encryptionBg: "#FEF4C5",
+  encryptionText: "#5C4B1F",
 
-  // Documentos
-  pdfRed: "#F44336",
-  pdfRedDark: "#D32F2F",
+  statusRing: "#25D366",
+  statusRingUnseen: "#25D366",
+  statusRingSeen: "#BFC5CA",
+  missedCall: "#F15C6D",
+  outgoingCall: "#53BDEB",
 
-  // Geral
   white: "#FFFFFF",
   black: "#000000",
   error: "#E53935",
   success: "#43A047",
-  warning: "#FB8C00",
 };
 
 export const FONTS = {
-  // Tamanhos
-  headerTitle: 17,
+  headerTitle: 20,
   subtitle: 13,
-  messageText: 15.5,
-  timestamp: 10.5,
+  messageText: 16,
+  timestamp: 11,
   input: 16,
-  quickReply: 14,
-  menuItem: 15,
+  menuItem: 16,
   dateSeparator: 12.5,
+  chatName: 17,
+  chatPreview: 14,
+  tabLabel: 11,
 
-  // Pesos
   regular: "400",
   medium: "500",
   semibold: "600",
@@ -112,30 +101,23 @@ export const RADIUS = {
 export const SHADOWS = {
   bubble: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0.5 },
-    shadowOpacity: 0.06,
-    shadowRadius: 0.8,
-    elevation: 0.5,
+    shadowOffset: { width: 0, height: 0.4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 0.6,
+    elevation: 1,
   },
   small: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.1,
     shadowRadius: 2,
-    elevation: 1,
+    elevation: 2,
   },
-  medium: {
+  fab: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.22,
     shadowRadius: 4,
-    elevation: 3,
-  },
-  large: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
     elevation: 6,
   },
 };
