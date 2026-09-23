@@ -37,8 +37,8 @@ export default function Wallpaper() {
             left: d.x,
             top: d.y,
             fontSize: Math.min(d.s, 18),
-            color: COLORS.chatBgPatternSoft,
-            opacity: Math.min(d.o, 0.1),
+            color: COLORS.chatBgPattern,
+            opacity: Math.min(d.o, 0.12),
             transform: [{ rotate: d.r }],
           }}
         >

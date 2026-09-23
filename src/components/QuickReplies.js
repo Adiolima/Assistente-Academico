@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: COLORS.quickReplyBorder,
+    borderColor: COLORS.menuBorder,
     ...SHADOWS.small,
   },
   chipText: {
-    fontSize: FONTS.quickReply,
-    color: COLORS.quickReplyText,
+    fontSize: 14,
+    color: COLORS.textSecondary,
     fontWeight: FONTS.medium,
   },
 });

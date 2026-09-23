@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     maxWidth: 420,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: COLORS.encryptionBorder,
+    borderColor: "rgba(0,0,0,0.06)",
   },
   text: {
     flex: 1,
