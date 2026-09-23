@@ -16,6 +16,21 @@ const WEEKDAYS = [
   "sábado",
 ];
 
+const MONTHS = [
+  "janeiro",
+  "fevereiro",
+  "março",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro",
+];
+
 function toDateKey(ts) {
   const d = new Date(ts);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
@@ -27,7 +42,7 @@ function toDateKey(ts) {
  * Rótulo do separador a partir do timestamp (em português).
  * - Hoje / Ontem
  * - Nome do dia (últimos 7 dias)
- * - dd/mm/aaaa para datas mais antigas
+ * - "23 de setembro" (mesmo ano) ou "23 de setembro de 2025" (anos anteriores)
  */
 export function formatDateLabel(ts) {
   if (!ts) return null;
@@ -48,9 +63,14 @@ export function formatDateLabel(ts) {
     return WEEKDAYS[date.getDay()];
   }
 
-  return `${String(date.getDate()).padStart(2, "0")}/${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}/${date.getFullYear()}`;
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = MONTHS[date.getMonth()];
+
+  if (date.getFullYear() === now.getFullYear()) {
+    return `${day} de ${month}`;
+  }
+
+  return `${day} de ${month} de ${date.getFullYear()}`;
 }
 
 export default function DateSeparator({ label }) {
@@ -85,6 +105,7 @@ const styles = StyleSheet.create({
     fontSize: FONTS.dateSeparator,
     color: COLORS.dateSeparatorText,
     fontWeight: FONTS.medium,
-    textTransform: "lowercase",
+    textTransform: "uppercase",
+    letterSpacing: 0.3,
   },
 });

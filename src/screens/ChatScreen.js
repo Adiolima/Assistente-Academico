@@ -5,7 +5,7 @@
  * - Header com avatar e status
  * - Wallpaper bege com padrão discreto
  * - Quick replies quando o chat está vazio
- * - Aviso de criptografia de ponta a ponta
+ * - Aviso informativo discreto no topo da conversa
  * - Separadores de data
  * - Mensagens agrupadas com animações de entrada
  * - Indicador de "a escrever..."
@@ -22,7 +22,6 @@ import {
   Keyboard,
   StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import ChatHeader from "../components/ChatHeader";
 import ChatMenu from "../components/ChatMenu";
@@ -40,12 +39,13 @@ import {
   clearLocalMessages,
 } from "../utils/storage";
 import { COLORS } from "../utils/theme";
+import { SCHOOL_NAME } from "../config";
 
 const WELCOME_MESSAGE = {
   id: "welcome-init",
   role: "assistant",
   content:
-    "👋 Bem-vindo ao *Colégio Estrela do Saber*!\n\n" +
+    `👋 Bem-vindo ao *${SCHOOL_NAME}*!\n\n` +
     "Sou o assistente virtual da escola. Posso ajudar com:\n" +
     "💰 Propinas e valores\n" +
     "📅 Calendário escolar\n" +
@@ -105,7 +105,7 @@ export default function ChatScreen() {
   // =========================================================================
   useEffect(() => {
     const init = async () => {
-      await clearLocalMessages();
+      // Carrega primeiro — nunca apagar antes de carregar.
       const saved = await loadMessages();
       if (saved.length > 0) {
         setMessages(saved);
@@ -255,10 +255,7 @@ export default function ChatScreen() {
   const keyExtractor = useCallback((item) => item.id, []);
 
   return (
-    <SafeAreaView
-      style={styles.container}
-      edges={["top", "left", "right", "bottom"]}
-    >
+    <View style={styles.container}>
       <StatusBar backgroundColor={COLORS.headerBg} barStyle="light-content" />
 
       <KeyboardAvoidingView
@@ -314,7 +311,7 @@ export default function ChatScreen() {
         onClose={() => setMenuVisible(false)}
         onClearHistory={handleClearHistory}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

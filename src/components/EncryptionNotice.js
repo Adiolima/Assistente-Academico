@@ -1,20 +1,21 @@
 /**
- * EncryptionNotice - Aviso visual de criptografia de ponta a ponta.
- * Cartão amarelo claro, centralizado, apenas visual (não implementa criptografia).
+ * EncryptionNotice - Aviso discreto no topo da conversa.
+ * Texto tecnicamente honesto: o protótipo não implementa criptografia
+ * de ponta a ponta, por isso não o afirmamos.
  */
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { COLORS, FONTS } from "../utils/theme";
-import { LockIcon } from "./Icons";
+import { COLORS } from "../utils/theme";
+import { InfoIcon } from "./Icons";
 
 export default function EncryptionNotice() {
   return (
     <View style={styles.wrapper}>
-      <View style={styles.card}>
-        <LockIcon color={COLORS.encryptionText} size={16} />
+      <View style={styles.pill}>
+        <InfoIcon color={COLORS.encryptionText} size={13} />
         <Text style={styles.text}>
-          As mensagens e ligações são protegidas com a criptografia de ponta a
-          ponta.
+          Mensagens processadas pelo servidor da escola. Evite partilhar dados
+          sensíveis.
         </Text>
       </View>
     </View>
@@ -25,28 +26,25 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
     paddingHorizontal: 28,
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
-  card: {
+  pill: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: COLORS.encryptionBg,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    borderRadius: 7,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
     maxWidth: 420,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 1,
-    elevation: 1,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: COLORS.encryptionBorder,
   },
   text: {
     flex: 1,
-    fontSize: 12.5,
+    fontSize: 12,
     lineHeight: 16,
     color: COLORS.encryptionText,
-    marginLeft: 8,
+    marginLeft: 7,
     textAlign: "center",
   },
 });

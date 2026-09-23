@@ -14,12 +14,12 @@ import {
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from "../utils/theme";
 
 const SUGGESTIONS = [
-  { emoji: "💰", text: "Valor das propinas" },
-  { emoji: "📅", text: "Calendário escolar" },
-  { emoji: "📄", text: "Documentos p/ matrícula" },
-  { emoji: "📚", text: "Cursos disponíveis" },
-  { emoji: "⏰", text: "Horário das aulas" },
-  { emoji: "📍", text: "Localização da escola" },
+  "Quanto custa a propina?",
+  "Quais documentos preciso?",
+  "Quais cursos existem?",
+  "Qual é o calendário escolar?",
+  "Onde fica a escola?",
+  "Qual é o horário da secretaria?",
 ];
 
 export default function QuickReplies({ onSelect }) {
@@ -35,11 +35,10 @@ export default function QuickReplies({ onSelect }) {
           <TouchableOpacity
             key={idx}
             style={styles.chip}
-            onPress={() => onSelect(item.text)}
+            onPress={() => onSelect(item)}
             activeOpacity={0.7}
           >
-            <Text style={styles.chipEmoji}>{item.emoji}</Text>
-            <Text style={styles.chipText}>{item.text}</Text>
+            <Text style={styles.chipText}>{item}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -65,19 +64,13 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   chip: {
-    flexDirection: "row",
-    alignItems: "center",
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.xl,
     paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderWidth: 1,
+    paddingVertical: 8,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: COLORS.quickReplyBorder,
     ...SHADOWS.small,
-  },
-  chipEmoji: {
-    fontSize: 14,
-    marginRight: 6,
   },
   chipText: {
     fontSize: FONTS.quickReply,

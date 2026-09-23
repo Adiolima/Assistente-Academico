@@ -12,21 +12,14 @@ import {
   Pressable,
   Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS, FONTS, SPACING, RADIUS } from "../utils/theme";
+import { SCHOOL_NAME, SCHOOL_CONTACTS } from "../config";
 
 const MENU_ITEMS = [
   { icon: "🗑️", label: "Limpar conversa", action: "clear", danger: true },
-  { icon: "ℹ️", label: "Sobre a escola", action: "about" },
+  { icon: "ℹ️", label: "Informações da escola", action: "about" },
 ];
-
-const SCHOOL_INFO = {
-  nome: "Colégio Estrela do Saber",
-  localizacao: "Rua do Futungo, nº 78, Belas, Luanda",
-  telefone: "+244 931 200 300",
-  email: "geral@estreladosaber.co.ao",
-  horario: "Seg-Sex: 07h30 – 16h00",
-  diretor: "Prof. Eduardo Makiesse",
-};
 
 export default function ChatMenu({
   visible,
@@ -34,6 +27,7 @@ export default function ChatMenu({
   onClearHistory,
 }) {
   const [showAbout, setShowAbout] = React.useState(false);
+  const insets = useSafeAreaInsets();
 
   const handlePress = (action) => {
     if (action === "clear") {
@@ -54,7 +48,12 @@ export default function ChatMenu({
         onRequestClose={onClose}
       >
         <Pressable style={styles.overlay} onPress={onClose}>
-          <View style={styles.menu}>
+          <View
+            style={[
+              styles.menu,
+              { marginTop: insets.top + 44 },
+            ]}
+          >
             <Text style={styles.menuTitle}>Opções</Text>
             {MENU_ITEMS.map((item, idx) => (
               <TouchableOpacity
@@ -78,7 +77,7 @@ export default function ChatMenu({
         </Pressable>
       </Modal>
 
-      {/* Modal "Sobre a escola" */}
+      {/* Modal "Informações da escola" */}
       <Modal
         visible={showAbout}
         transparent
@@ -87,15 +86,15 @@ export default function ChatMenu({
       >
         <Pressable style={styles.overlay} onPress={() => setShowAbout(false)}>
           <View style={styles.aboutCard}>
-            <Text style={styles.aboutTitle}>{SCHOOL_INFO.nome}</Text>
+            <Text style={styles.aboutTitle}>{SCHOOL_NAME}</Text>
             <View style={styles.aboutDivider} />
 
             {[
-              { label: "📍", value: SCHOOL_INFO.localizacao },
-              { label: "📞", value: SCHOOL_INFO.telefone },
-              { label: "📧", value: SCHOOL_INFO.email },
-              { label: "🕐", value: SCHOOL_INFO.horario },
-              { label: "👤", value: SCHOOL_INFO.diretor },
+              { label: "📍", value: SCHOOL_CONTACTS.localizacao },
+              { label: "📞", value: SCHOOL_CONTACTS.telefone },
+              { label: "📧", value: SCHOOL_CONTACTS.email },
+              { label: "🕐", value: SCHOOL_CONTACTS.horario },
+              { label: "👤", value: SCHOOL_CONTACTS.diretor },
             ].map((row, i) => (
               <View key={i} style={styles.aboutRow}>
                 <Text style={styles.aboutIcon}>{row.label}</Text>
@@ -123,8 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.overlay,
     justifyContent: "flex-start",
     alignItems: "flex-end",
-    paddingTop: Platform.OS === "ios" ? 100 : 60,
-    paddingRight: SPACING.lg,
+    paddingRight: SPACING.md,
   },
 
   // Menu dropdown

@@ -1,5 +1,5 @@
 /**
- * App.js - Assistente Acadêmico — Colégio Estrela do Saber.
+ * App.js - Assistente Acadêmico (interface estilo chat de mensagens).
  */
 import React from "react";
 import { registerRootComponent } from "expo";

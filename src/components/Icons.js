@@ -215,6 +215,37 @@ export function LockIcon({ color = "#7A7A7A", size = 16 }) {
   );
 }
 
+/** Informação (i dentro de círculo) para avisos discretos. */
+export function InfoIcon({ color = "#667781", size = 16 }) {
+  return (
+    <IconWrap size={size}>
+      <View
+        style={{
+          width: size * 0.9,
+          height: size * 0.9,
+          borderRadius: size * 0.45,
+          borderWidth: 1.5,
+          borderColor: color,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            color,
+            fontSize: size * 0.6,
+            fontWeight: "700",
+            lineHeight: size * 0.7,
+            includeFontPadding: false,
+          }}
+        >
+          i
+        </Text>
+      </View>
+    </IconWrap>
+  );
+}
+
 /** Ticks de entrega/leitura (✓ simples ou ✓✓). */
 export function TickIcon({ color = "#667781", double = true, size = 16 }) {
   const check = (key, extraStyle) => (

@@ -4,10 +4,11 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { COLORS, FONTS } from "../utils/theme";
+import { COLORS } from "../utils/theme";
+import { SCHOOL_NAME, SCHOOL_AVATAR_TEXT } from "../config";
 import {
   BackIcon,
   PhoneIcon,
@@ -23,19 +24,27 @@ export default function ChatHeader({
   onVideoPress,
   onCallPress,
 }) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.header}>
+    <View
+      style={[
+        styles.header,
+        { paddingTop: insets.top, height: insets.top + 52 },
+      ]}
+    >
       <TouchableOpacity
         style={styles.backButton}
         onPress={onBackPress}
         activeOpacity={0.6}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       >
-        <BackIcon color="#FFFFFF" size={24} />
+        <BackIcon color={COLORS.headerText} size={24} />
       </TouchableOpacity>
 
       <View style={styles.avatarContainer}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>CE</Text>
+          <Text style={styles.avatarText}>{SCHOOL_AVATAR_TEXT}</Text>
         </View>
 
         {isOnline && <View style={styles.onlineDot} />}
@@ -43,7 +52,7 @@ export default function ChatHeader({
 
       <View style={styles.identity}>
         <Text style={styles.name} numberOfLines={1}>
-          Colégio Estrela do Saber
+          {SCHOOL_NAME}
         </Text>
 
         <Text style={styles.status} numberOfLines={1}>
@@ -55,24 +64,27 @@ export default function ChatHeader({
         style={styles.actionButton}
         onPress={onVideoPress}
         activeOpacity={0.6}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
       >
-        <VideoIcon color="#FFFFFF" size={22} />
+        <VideoIcon color={COLORS.headerText} size={22} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.actionButton}
         onPress={onCallPress}
         activeOpacity={0.6}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
       >
-        <PhoneIcon color="#FFFFFF" size={20} />
+        <PhoneIcon color={COLORS.headerText} size={20} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.menuButton}
         onPress={onMenuPress}
         activeOpacity={0.6}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}
       >
-        <MenuIcon color="#FFFFFF" size={23} />
+        <MenuIcon color={COLORS.headerText} size={22} />
       </TouchableOpacity>
     </View>
   );
@@ -80,16 +92,15 @@ export default function ChatHeader({
 
 const styles = StyleSheet.create({
   header: {
-    height: Platform.OS === "ios" ? 58 : 56,
-    backgroundColor: "#075E54",
+    backgroundColor: COLORS.headerBg,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 2,
+    paddingHorizontal: 4,
   },
 
   backButton: {
-    width: 38,
-    height: 48,
+    width: 40,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -97,16 +108,15 @@ const styles = StyleSheet.create({
   avatarContainer: {
     width: 40,
     height: 40,
-    marginLeft: 1,
-    marginRight: 9,
-    position: "relative",
+    marginLeft: 2,
+    marginRight: 10,
   },
 
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.headerText,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -114,31 +124,31 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#075E54",
+    color: COLORS.headerBg,
   },
 
   onlineDot: {
     position: "absolute",
-    right: -1,
+    right: 0,
     bottom: 0,
     width: 11,
     height: 11,
     borderRadius: 6,
-    backgroundColor: "#25D366",
+    backgroundColor: COLORS.online,
     borderWidth: 2,
-    borderColor: "#075E54",
+    borderColor: COLORS.headerBg,
   },
 
   identity: {
     flex: 1,
     justifyContent: "center",
+    minWidth: 0,
   },
 
   name: {
-    color: "#FFFFFF",
+    color: COLORS.headerText,
     fontSize: 16,
     fontWeight: "600",
-    maxWidth: "100%",
   },
 
   status: {
@@ -148,15 +158,15 @@ const styles = StyleSheet.create({
   },
 
   actionButton: {
-    width: 42,
-    height: 48,
+    width: 40,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
   },
 
   menuButton: {
-    width: 36,
-    height: 48,
+    width: 38,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
   },

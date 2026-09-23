@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
-import { COLORS, FONTS } from "../utils/theme";
+import { COLORS, FONTS, SHADOWS } from "../utils/theme";
 import { TickIcon } from "./Icons";
 import DocumentCard from "./DocumentCard";
 
@@ -228,15 +228,16 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 5,
     minWidth: 70,
+    ...SHADOWS.bubble,
   },
 
   userBubble: {
-    backgroundColor: "#D9FDD3",
+    backgroundColor: COLORS.userBubble,
     borderTopRightRadius: 2,
   },
 
   assistantBubble: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.botBubble,
     borderTopLeftRadius: 2,
   },
 
@@ -260,24 +261,24 @@ const styles = StyleSheet.create({
   },
 
   userText: {
-    color: "#111B21",
+    color: COLORS.textPrimary,
   },
 
   assistantText: {
-    color: "#111B21",
+    color: COLORS.textPrimary,
   },
 
   footer: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 8,
+    marginLeft: 6,
     marginTop: 3,
     alignSelf: "flex-end",
   },
 
   time: {
     fontSize: 10,
-    color: "#667781",
+    color: COLORS.textSecondary,
   },
 
   ticks: {

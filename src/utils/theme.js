@@ -21,13 +21,13 @@ export const COLORS = {
   chatBgPatternSoft: "#DCD2C5",
 
   // Bolhas
-  userBubble: "#DCF8C6",
-  userBubbleDark: "#C5E8B0",
+  userBubble: "#D9FDD3",
+  userBubbleDark: "#C6EFB6",
   botBubble: "#FFFFFF",
   botBubbleBorder: "#E8E8E8",
 
   // Texto
-  textPrimary: "#1F1F1F",
+  textPrimary: "#111B21",
   textSecondary: "#667781",
   textLight: "#9AA7AD",
   textWhite: "#FFFFFF",
@@ -39,7 +39,7 @@ export const COLORS = {
   // Input
   inputBg: "#FFFFFF",
   inputBorder: "#E0E0E0",
-  inputBar: "#F0EEE9",
+  inputBar: "#F0F2F5",
   sendActive: "#00A884",
   sendInactive: "#90A4AE",
   inputIcon: "#54656F",
@@ -57,9 +57,10 @@ export const COLORS = {
 
   // Separadores / avisos
   dateSeparatorBg: "#FFFFFF",
-  dateSeparatorText: "#667781",
-  encryptionBg: "#FFF3C4",
-  encryptionText: "#5E5E5E",
+  dateSeparatorText: "#54656F",
+  encryptionBg: "rgba(255, 255, 255, 0.92)",
+  encryptionText: "#667781",
+  encryptionBorder: "#E2E5E7",
 
   // Documentos
   pdfRed: "#F44336",
@@ -109,6 +110,13 @@ export const RADIUS = {
 };
 
 export const SHADOWS = {
+  bubble: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0.5 },
+    shadowOpacity: 0.06,
+    shadowRadius: 0.8,
+    elevation: 0.5,
+  },
   small: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },

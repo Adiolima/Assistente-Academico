@@ -8,8 +8,9 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { COLORS } from "../utils/theme";
+import { COLORS, SHADOWS } from "../utils/theme";
 import {
   PlusIcon,
   SmileIcon,
@@ -23,6 +24,7 @@ export default function ChatInput({
 }) {
   const [text, setText] = useState("");
   const scale = useRef(new Animated.Value(1)).current;
+  const insets = useSafeAreaInsets();
 
   const sendable = text.trim().length > 0 && !disabled;
 
@@ -31,13 +33,13 @@ export default function ChatInput({
 
     Animated.sequence([
       Animated.timing(scale, {
-        toValue: 0.88,
+        toValue: 0.85,
         duration: 70,
         useNativeDriver: true,
       }),
       Animated.timing(scale, {
         toValue: 1,
-        duration: 100,
+        duration: 110,
         useNativeDriver: true,
       }),
     ]).start();
@@ -50,7 +52,12 @@ export default function ChatInput({
   };
 
   return (
-    <View style={styles.bar}>
+    <View
+      style={[
+        styles.bar,
+        { paddingBottom: (Platform.OS === "ios" ? 7 : 6) + insets.bottom },
+      ]}
+    >
       <TouchableOpacity
         style={styles.plusButton}
         activeOpacity={0.6}
@@ -76,7 +83,7 @@ export default function ChatInput({
           style={styles.input}
           value={text}
           onChangeText={setText}
-          placeholder="Mensagem"
+          placeholder="Escrever mensagem"
           placeholderTextColor="#667781"
           multiline
           maxLength={2000}
@@ -135,10 +142,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     paddingHorizontal: 5,
     paddingTop: 5,
-    paddingBottom: Platform.OS === "ios" ? 7 : 6,
-    backgroundColor: "#F0F2F5",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "#D9DEE2",
+    backgroundColor: COLORS.inputBar,
   },
 
   plusButton: {
@@ -154,13 +158,11 @@ const styles = StyleSheet.create({
     maxHeight: 118,
     flexDirection: "row",
     alignItems: "flex-end",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.inputBg,
     borderRadius: 21,
     paddingLeft: 4,
     paddingRight: 4,
     marginRight: 4,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "#D9DEE2",
   },
 
   composerIcon: {
@@ -191,9 +193,10 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "#00A884",
+    backgroundColor: COLORS.sendActive,
     alignItems: "center",
     justifyContent: "center",
+    ...SHADOWS.small,
   },
 
   sendArrow: {

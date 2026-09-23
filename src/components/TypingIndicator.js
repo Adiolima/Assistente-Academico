@@ -4,6 +4,8 @@
  */
 import React, { useEffect, useRef } from "react";
 import { View, Text, Animated, StyleSheet } from "react-native";
+import { COLORS, SHADOWS } from "../utils/theme";
+
 export default function TypingIndicator() {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
@@ -62,37 +64,33 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     paddingHorizontal: 8,
-    paddingBottom: 2,
+    paddingBottom: 3,
   },
   avatarSlot: {
-    width: 28,
-    marginRight: 6,
+    width: 30,
+    marginRight: 5,
     justifyContent: "flex-end",
   },
   avatar: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: "#075E54",
+    backgroundColor: COLORS.headerBg,
     justifyContent: "center",
     alignItems: "center",
   },
   avatarText: {
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontSize: 10,
     fontWeight: "700",
   },
   bubble: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: COLORS.botBubble,
     borderRadius: 8,
     borderTopLeftRadius: 2,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 1,
-    elevation: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 11,
+    ...SHADOWS.bubble,
   },
   dotsRow: {
     flexDirection: "row",
